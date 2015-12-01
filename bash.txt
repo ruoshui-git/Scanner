@@ -3,3 +3,5 @@ function foo() {
     cat "$1" | sort -r | uniq | cat > tmp
     mv tmp "$1"
 }
+
+tinyurl.com/CSDojoOSIS
