@@ -9,7 +9,7 @@ RESET="\033[m"
 
 # Get some constants for the Date, Log Filename, and the length of a valid
 # barcode
-DATE=`date +"%Y_%m_%d"`
+DATE=`date +"%Y-%m-%d"`
 LOG=logs/${DATE}.csv
 VALID_BARCODE_LENGTH=9
 
