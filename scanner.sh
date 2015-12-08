@@ -19,20 +19,14 @@ function show_prompt() {
     echo -n "Swipe card: "
 }
 
-# Put the heading in the log
-echo "STUDENT OSIS, DATE: $DATE" >> $LOG
-
 # Make a cleanup script to organize the log and remove duplicates
 function cleanup() {
     echo "Cleaning up..."
     # A brief explanation: cat the first parameter, which should be the log file
-    # into sort -r, which sorts it into reverse. All the IDs are numeric, and
-    # numeric values have lower ASCII values than letters, so if we just use
-    # 'sort', the heading, which is text, will be at the end. Thus, we use the
-    # '-r' flag to sort in reverse so it's at the beginning. This gets put into
-    # 'uniq' which removes duplicate values, and then that gets put into a tmp
-    # file, which then replaces the log file with that tmp file.
-    cat "$1" | sort -r | uniq | cat > tmp
+    # into sort, which sorts it. The sorted list is put into 'uniq' which removes
+    # duplicate values, and then that gets put into a tmp file, which then
+    # replaces the log file with that tmp file.
+    cat "$1" | sort | uniq | cat > tmp
     mv tmp "$1"
 }
 
