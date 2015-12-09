@@ -54,7 +54,7 @@ function login() {
     echo -n "Password: "
     read -s pass
     echo ""
-    response=$(curl -q -X GET $SERVER_ADDR"?username=${ADMIN_NAME}&pword=${pass}" > /dev/null)
+    response=$(curl -q -X GET $SERVER_ADDR"?username=${ADMIN_NAME}&pword=${pass}")
     if [[ $response =~ "bad_login" ]]; then
         printf "${RED}ERROR: Could not contact server${RESET}\n"
         exit
