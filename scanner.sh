@@ -98,7 +98,7 @@ function scan() {
                 # Append barcode to log
                 echo $barcode >> $LOG
                 # Curl the server
-                curl -q -X GET ${SERVER_ADDR}"?username=${ADMIN_NAME}&pword=${ADMIN_PWORD}&osis=${barcode}" > /dev/null
+                curl -s -X GET ${SERVER_ADDR}"?username=${ADMIN_NAME}&pword=${ADMIN_PWORD}&osis=${barcode}" &
             else
                 printf "${YELLOW}You already scanned in${RESET}\n"
             fi
@@ -106,8 +106,23 @@ function scan() {
     done
 }
 
+function custom_upload() {
+    curl -s -X GET ${SERVER_ADDR}"?username=${ADMIN_NAME}&pword=${ADMIN_PWORD}&osis=$2&date=$1"
+}
+
+function dump_csv() {
+    FILE=$1
+    cat $1 | while read num; do
+        custom_upload "${FILE%%.*}" $num
+    done
+}
+
 # Admin Login
 login
+cd logs/
+for f in *.csv; do
+    dump_csv $f
+done
 # Invoke the scan function
-scan
+# scan
 
