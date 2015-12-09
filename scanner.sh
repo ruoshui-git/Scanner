@@ -9,9 +9,15 @@ RESET="\033[m"
 
 # Get some constants for the Date, Log Filename, and the length of a valid
 # barcode
-DATE=`date +"%Y-%m-%d"`
+DATE=`date +"%Y_%m_%d"`
 LOG=logs/${DATE}.csv
 VALID_BARCODE_LENGTH=9
+
+# Login variables
+ADMIN_NAME=""
+ADMIN_PWORD=""
+
+SERVER_ADDR="http://stuyctf.me:11235"
 
 # Define a method to show a prompt
 function show_prompt() {
@@ -36,6 +42,31 @@ function traphook() {
 
 # Add a shutdown hook so the log is cleaned when script exits
 trap traphook EXIT
+
+function login() {
+    # Read login credentials and validate with server
+    echo "Admin login:"
+    if [[ $ADMIN_EMAIL == "" ]]; then
+        echo -n "Username: "
+        read name
+        ADMIN_NAME=$name
+    fi
+    echo -n "Password: "
+    read -s pass
+    echo ""
+    response=$(curl -q -X GET $SERVER_ADDR"?username=${ADMIN_NAME}&pword=${pass}" > /dev/null)
+    if [[ $response =~ "bad_login" ]]; then
+        printf "${RED}ERROR: Could not contact server${RESET}\n"
+        exit
+    elif [[ $response =~ "no_osis" ]]; then
+        printf "${GREEN}Validation successful${RESET}\n"
+        ADMIN_PWORD=$pass
+    else
+        # Print out error message
+        printf "${RED}${response}${RESET}\n"
+        exit
+    fi
+}
 
 function scan() {
     # Update log name if dates were overridden
@@ -66,6 +97,8 @@ function scan() {
                 printf "${GREEN}Got barcode: ${barcode}${RESET}\n"
                 # Append barcode to log
                 echo $barcode >> $LOG
+                # Curl the server
+                curl -q -X GET ${SERVER_ADDR}"?username=${ADMIN_NAME}&pword=${ADMIN_PWORD}&osis=${barcode}" > /dev/null
             else
                 printf "${YELLOW}You already scanned in${RESET}\n"
             fi
@@ -73,6 +106,8 @@ function scan() {
     done
 }
 
+# Admin Login
+login
 # Invoke the scan function
 scan
 
