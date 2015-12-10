@@ -119,10 +119,6 @@ function dump_csv() {
 
 # Admin Login
 login
-# cd logs/
-# for f in *.csv; do
-#     dump_csv $f
-# done
 # Invoke the scan function
 scan
 
