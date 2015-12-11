@@ -98,7 +98,7 @@ function scan() {
                 # Append barcode to log
                 echo $barcode >> $LOG
                 # Curl the server
-                curl -s -X GET ${SERVER_ADDR}"?username=${ADMIN_NAME}&pword=${ADMIN_PWORD}&osis=${barcode}" &
+                curl -s -X GET ${SERVER_ADDR}"?username=${ADMIN_NAME}&pword=${ADMIN_PWORD}&osis=${barcode}&date=${DATE}" &
             else
                 printf "${YELLOW}You already scanned in${RESET}\n"
             fi
