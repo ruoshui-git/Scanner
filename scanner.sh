@@ -54,7 +54,7 @@ function login() {
     echo -n "Password: "
     read -s pass
     echo ""
-    response=$(curl -q -X GET $SERVER_ADDR"?username=${ADMIN_NAME}&pword=${pass}")
+    response=$(curl -# -X GET $SERVER_ADDR"?username=${ADMIN_NAME}&pword=${pass}")
     if [[ $response =~ "bad_login" ]]; then
         printf "${RED}ERROR: Could not contact server${RESET}\n"
         exit
@@ -98,7 +98,7 @@ function scan() {
                 # Append barcode to log
                 echo $barcode >> $LOG
                 # Curl the server
-                curl -s -X GET ${SERVER_ADDR}"?username=${ADMIN_NAME}&pword=${ADMIN_PWORD}&osis=${barcode}&date=${DATE}" &
+                curl --silent -X GET "${SERVER_ADDR}?username=${ADMIN_NAME}&pword=${ADMIN_PWORD}&osis=${barcode}&date=${DATE}" > /dev/null&
             else
                 printf "${YELLOW}You already scanned in${RESET}\n"
             fi
@@ -107,7 +107,7 @@ function scan() {
 }
 
 function custom_upload() {
-    curl -s -X GET ${SERVER_ADDR}"?username=${ADMIN_NAME}&pword=${ADMIN_PWORD}&osis=$2&date=$1"
+    curl --silent -X GET "${SERVER_ADDR}?username=${ADMIN_NAME}&pword=${ADMIN_PWORD}&osis=$2&date=$1" > /dev/null
 }
 
 function dump_csv() {
