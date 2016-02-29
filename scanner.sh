@@ -17,7 +17,7 @@ VALID_BARCODE_LENGTH=9
 ADMIN_NAME=""
 ADMIN_PWORD=""
 
-SERVER_ADDR="http://stuyctf.me:11235"
+SERVER_ADDR="http://162.243.115.175:11235"
 
 # Define a method to show a prompt
 function show_prompt() {
