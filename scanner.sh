@@ -19,6 +19,8 @@ ADMIN_PWORD=""
 
 SERVER_ADDR="http://162.243.115.175:11235"
 
+#Scanner
+strike=false
 # Define a method to show a prompt
 function show_prompt() {
     echo "============================="
@@ -81,6 +83,11 @@ function scan() {
         # The conditionals should be self explanatory
         if [[ $barcode == "exit" ]]; then
             exit
+        elif [[ $barcode == "strike" ]]; then
+            strike=true
+        elif [[ $strike == 1 ]]; then
+            python strikes.py $barcode
+            strike=false
         elif [[ ${#barcode} != $VALID_BARCODE_LENGTH ]]; then
             # tput bel 'displays' the ASCII bell character, which invokes a
             # sound
