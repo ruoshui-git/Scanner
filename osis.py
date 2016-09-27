@@ -3,6 +3,7 @@
 from datetime import datetime, timedelta
 from os.path import exists
 import matplotlib.pyplot as plt 
+from sys import argv
 
 
 def get_oses(start, end):
@@ -27,10 +28,20 @@ def get_oses(start, end):
 	return dt_osis_dict, ordered_oses
 
 
+def get_dates(osis, dt_osis_dict):
+        dates = []
+        for dt, oses in dt_osis_dict.items():
+                if osis in oses:
+                        dates.append(dt)
+        return dates
+                        
+                        
 if __name__ == '__main__':
-	_, oo = get_oses(datetime(2015, 12, 7), datetime(2016, 6, 15))
-	lengths = [len(i) for i in oo]
-	x = range(len(oo))
-	plt.plot(x, lengths)
-	plt.title('Attendance vs. Time')
-	plt.show()
+	dc, _ = get_oses(datetime(2014,1,1), datetime(2017,1,1))
+        oses = argv[1:]
+        for i in oses:
+                try:
+                        print i, get_dates(int(i), dc)
+                        print
+                except:
+                        pass
