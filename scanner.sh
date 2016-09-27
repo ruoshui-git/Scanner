@@ -120,7 +120,7 @@ function dump_csv() {
 }
 
 # Admin Login
-login
+#login
 # Invoke the scan function
 scan
 
