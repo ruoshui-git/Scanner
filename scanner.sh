@@ -85,8 +85,9 @@ function scan() {
             exit
         elif [[ $barcode == "strike" ]]; then
             strike=true
-        elif [[ $strike == 1 ]]; then
-            python strikes.py $barcode
+        elif [[ $strike == true ]]; then
+            python strike.py $barcode
+        elif [[ $barcode == "strike off" ]]; then
             strike=false
         elif [[ ${#barcode} != $VALID_BARCODE_LENGTH ]]; then
             # tput bel 'displays' the ASCII bell character, which invokes a
