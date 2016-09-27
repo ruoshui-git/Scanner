@@ -2,6 +2,7 @@ from sys import argv
 
 
 oses = argv[1:]
+
 for osis in oses:
         with open('strikes.txt', 'r') as f:
                 strike_dict = eval(f.read())
