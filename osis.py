@@ -16,14 +16,19 @@ def get_oses(start, end):
 		stpath = 'logs/'+start.strftime('%Y_%m_%d') + '.csv'
 		if exists(stpath):
 			with open(stpath) as f:
-				osises = [int(i.strip()) for i in f.readlines()]
+                                osises = []
+                                for i in f.readlines():
+                                        try:
+                                                osises.append(int(i.strip()))
+                                        except:
+                                                pass
 			dt_osis_dict[start] = osises
 			ordered_oses.append(osises)
 	return dt_osis_dict, ordered_oses
 
 
 if __name__ == '__main__':
-	_, oo = get_oses(datetime(2014, 3, 7), datetime(2015, 6, 10))
+	_, oo = get_oses(datetime(2015, 12, 7), datetime(2016, 6, 15))
 	lengths = [len(i) for i in oo]
 	x = range(len(oo))
 	plt.plot(x, lengths)
