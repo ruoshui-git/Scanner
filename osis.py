@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from sys import argv
 
 
-def get_oses(start, end):
+def get_oses(start=datetime(2014,1,1), end=datetime(2018,1,1)):
 	'''Uses the log data from logs/ to compile two things: an ordered list of oses by day, and a dictionary with datetimes as keys and their oses as values.'''
 	day = timedelta(1)
 	diff = (end - start).days

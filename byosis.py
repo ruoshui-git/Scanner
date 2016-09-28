@@ -35,4 +35,11 @@ if __name__ == '__main__':
     elif len(byod[osis]) == maxc:
       os.append(osis)
   for osis in os:
+    print maxc, 'swipe ins:'
     show_attendance(osis, byod)
+    sort = sorted(byod[osis])
+    st = sort[0]
+    end = sort[-1]
+    diff = (end - st).days * 1. / maxc
+    print 'Between the earliest and latest dates they came to dojo, this person came in 1/' + str(diff), 'days'
+    
