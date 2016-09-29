@@ -86,19 +86,13 @@ function scan() {
         elif [[ $barcode == "help" ]]; then
             helpMenu
         elif [[ $barcode == "strike add" ]]; then
-            printf "${GREEN} ADDING STRIKES ====================================${RESET}\n"
+            printf "${GREEN}ADDING STRIKES ====================================${RESET}\n"
             strike=1
         elif [[ $barcode == "strike subtract" ]]; then
-            printf "${GREEN} SUBTRACTING STRIKES ====================================${RESET}\n"
+            printf "${GREEN}SUBTRACTING STRIKES ====================================${RESET}\n"
             strike=2
-        elif [[ $strike == 1 ]]; then
-            printf "${GREEN} Strike added to ${barcode} ${RESET}\n"
-            python strike.py 1 $barcode
-        elif [[ $strike == 2 ]]; then
-            printf "${GREEN} Strike subtracted from ${barcode} ${RESET}\n"
-            python strike.py 2 $barcode
         elif [[ $barcode == "strike off" ]]; then
-            printf "${GREEN} STRIKE SYSTEM OFF ====================================${RESET}\n"
+            printf "${GREEN}STRIKE SYSTEM OFF ====================================${RESET}\n"
             strike=0
         elif [[ ${#barcode} != $VALID_BARCODE_LENGTH ]]; then
             # tput bel 'displays' the ASCII bell character, which invokes a
@@ -108,6 +102,12 @@ function scan() {
         elif echo $barcode | grep "[^0-9]\+" > /dev/null; then
             tput bel
             printf "${RED}ERROR: Invalid barcode${RESET}\n"
+        elif [[ $strike == 1 ]]; then
+            printf "${GREEN}Strike added to ${barcode} ${RESET}\n"
+            python strike.py 1 $barcode
+        elif [[ $strike == 2 ]]; then
+            printf "${GREEN}Strike subtracted from ${barcode} ${RESET}\n"
+            python strike.py -1 $barcode
         else
             # Create the log file if it doesn't exist yet.
             if [[ ! -f $LOG ]]; then
@@ -128,12 +128,12 @@ function scan() {
 }
 
 function helpMenu(){
-    printf "${GREEN}HELP MENU ================================================${RESET}\n"
+    printf "${GREEN}HELP MENU ============================================================================================================${RESET}\n"
     printf "${YELLOW}strike add${MAGENTA}\t\t---\t\tone strike will be added to any ID scanned after \"strike on\" is entered${RESET}\n"
     printf "${YELLOW}strike subtract${MAGENTA}\t\t---\t\tone strike will be subtracted to any ID scanned after \"strike on\" is entered${RESET}\n"
     printf "${YELLOW}strike off${MAGENTA}\t\t---\t\t\"strike add\" or \"strike subtract\" will stop running${RESET}\n"
-    printf "${YELLOW}help${MAGENTA}\t\t---\t\tdisplay the help menu${RESET}\n\n"
-    printf "${GREEN}==========================================================${RESET}\n"
+    printf "${YELLOW}help${MAGENTA}\t\t\t---\t\tdisplay the help menu${RESET}\n"
+    printf "${GREEN}======================================================================================================================${RESET}\n\n"
 }
 function custom_upload() {
     curl --silent -X GET "${SERVER_ADDR}?username=${ADMIN_NAME}&pword=${ADMIN_PWORD}&osis=$2&date=$1" > /dev/null
@@ -149,5 +149,6 @@ function dump_csv() {
 # Admin Login
 #login
 # Invoke the scan function
+helpMenu
 scan
 
