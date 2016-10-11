@@ -105,9 +105,11 @@ function scan() {
         elif [[ $strike == 1 ]]; then
             printf "${GREEN}Strike added to ${barcode} ${RESET}\n"
             python strike.py 1 $barcode
+			python strike_print.py $barcode
         elif [[ $strike == 2 ]]; then
             printf "${GREEN}Strike subtracted from ${barcode} ${RESET}\n"
             python strike.py -1 $barcode
+			python strike_print.py $barcode
         else
             # Create the log file if it doesn't exist yet.
             if [[ ! -f $LOG ]]; then
@@ -116,12 +118,14 @@ function scan() {
             # Only send barcodes that haven't been logged yet
             if [[ $(grep $barcode $LOG) == "" ]]; then
                 printf "${GREEN}Got barcode: ${barcode}${RESET}\n"
+				python strike_print.py $barcode
                 # Append barcode to log
                 echo $barcode >> $LOG
                 # Curl the server
                 curl --silent -X GET "${SERVER_ADDR}?username=${ADMIN_NAME}&pword=${ADMIN_PWORD}&osis=${barcode}&date=${DATE}" > /dev/null&
             else
                 printf "${YELLOW}You already scanned in${RESET}\n"
+				python strike_print.py $barcode
             fi
         fi
     done
