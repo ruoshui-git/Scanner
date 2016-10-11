@@ -1,6 +1,5 @@
 # Scanner
-
 Run the scanner with ./scanner.sh
 
-It should be self explanatory
-
+# Tools
+They do analysis things
