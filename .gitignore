@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -92,3 +93,12 @@ ENV/
 #*
 *.swp
 .*.swp
+=======
+# Some temp files
+*~
+*\#.\#*
+
+#Python Compiled Files
+*.pyc
+
+>>>>>>> 9d4399c04f0492d8d26c23d5d424691591b78bb5
