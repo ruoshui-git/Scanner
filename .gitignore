@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -94,11 +93,26 @@ ENV/
 *.swp
 .*.swp
 =======
-# Some temp files
+
+# ================================
+# THAT CUSTOM THO
+# Text Backup Files #
+*.s[a-w][a-z]
 *~
-*\#.\#*
+\#*\#
+.\#*
 
-#Python Compiled Files
-*.pyc
+# OS X Files #
+.DS_Store
+._*
+_*
+.Spotlight*
+.Trashes
 
->>>>>>> 9d4399c04f0492d8d26c23d5d424691591b78bb5
+# Windows Files #
+Thumbs.db
+ehthumbs.db
+
+# Filenames with special characters
+**/*[\\/\:;*?!'"<>|$º•¶§∞¢£]*
+# ================================
