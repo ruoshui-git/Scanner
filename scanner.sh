@@ -70,7 +70,7 @@ function login() {
 function scan() {
     # Update log name if dates were overridden
     printf "%sEnter \"exit\" to cleanup duplicates and exit%s\n" "${YELLOW}" "${RESET}"
-    while [[ true ]]; do
+    while true; do
         # Display the prompt
         show_prompt
         # Keep reading a barcode from stdin
