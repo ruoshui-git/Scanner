@@ -53,23 +53,23 @@ function login() {
     echo ""
     response=$(curl -# -X GET $SERVER_ADDR"?username=${ADMIN_NAME}&pword=${pass}")
     if [[ $response =~ "bad_login" ]]; then
-        printf "${RED}ERROR: Could not contact server${RESET}\n"
+        printf "%sERROR: Could not contact server%s\n" "${RED}" "${RESET}"
         exit
     elif [[ $response =~ "no_osis" ]]; then
-        printf "${GREEN}Validation successful${RESET}\n"
+        printf "%sValidation successful%s\n" "${GREEN}" "${RESET}"
         ADMIN_PWORD=$pass
     else
         # Print out error message
         local error = $(echo "$response" | grep 'title')
         echo "$error"
-        #printf "${RED}${response}${RESET}\n"
+        #printf "%s${response}%s\n" "${RED}" "${RESET}"
         exit
     fi
 }
 
 function scan() {
     # Update log name if dates were overridden
-    printf "${YELLOW}Enter \"exit\" to cleanup duplicates and exit${RESET}\n"
+    printf "%sEnter \"exit\" to cleanup duplicates and exit%s\n" "${YELLOW}" "${RESET}"
     while [[ true ]]; do
         # Display the prompt
         show_prompt
@@ -81,28 +81,28 @@ function scan() {
         elif [[ $barcode == "help" ]]; then
             helpMenu
         elif [[ $barcode == "strike add" ]]; then
-            printf "${GREEN}ADDING STRIKES ====================================${RESET}\n"
+            printf "%sADDING STRIKES ====================================%s\n" "${GREEN}" "${RESET}"
             strike=1
         elif [[ $barcode == "strike subtract" ]]; then
-            printf "${GREEN}SUBTRACTING STRIKES ====================================${RESET}\n"
+            printf "%sSUBTRACTING STRIKES ====================================%s\n" "${GREEN}" "${RESET}"
             strike=2
         elif [[ $barcode == "strike off" ]]; then
-            printf "${GREEN}STRIKE SYSTEM OFF ====================================${RESET}\n"
+            printf "%sSTRIKE SYSTEM OFF ====================================%s\n" "${GREEN}" "${RESET}"
             strike=0
         elif [[ ${#barcode} != $VALID_BARCODE_LENGTH ]]; then
             # tput bel 'displays' the ASCII bell character, which invokes a
             # sound
             tput bel
-            printf "${RED}ERROR: Invalid barcode${RESET}\n"
+            printf "%sERROR: Invalid barcode%s\n" "${RED}" "${RESET}"
         elif echo "$barcode" | grep "[^0-9]\+" > /dev/null; then
             tput bel
-            printf "${RED}ERROR: Invalid barcode${RESET}\n"
+            printf "%sERROR: Invalid barcode%s\n" "${RED}" "${RESET}"
         elif [[ $strike == 1 ]]; then
-            printf "${GREEN}Strike added to ${barcode} ${RESET}\n"
+            printf "%sStrike added to %s%s\n" "${GREEN}" "${barcode}" "${RESET}"
             python strike.py 1 "$barcode"
             python strike_print.py "$barcode"
         elif [[ $strike == 2 ]]; then
-            printf "${GREEN}Strike subtracted from ${barcode} ${RESET}\n"
+            printf "%sStrike subtracted from %s%s\n" "${GREEN}" "${barcode}" "${RESET}"
             python strike.py -1 "$barcode"
             python strike_print.py "$barcode"
         else
@@ -112,14 +112,14 @@ function scan() {
             fi
             # Only send barcodes that haven't been logged yet
             if [[ $(grep "$barcode" "$LOG") == ""  ]]; then
-                printf "${GREEN}Got barcode: ${barcode}${RESET}\n"
+                printf "%sGot barcode: %s%s\n" "${GREEN}" "${barcode}" "${RESET}"
                 python strike_print.py "$barcode"
                 # Append barcode to log
                 echo "$barcode" >> "$LOG"
                 # Curl the server
                 curl --silent -X GET "${SERVER_ADDR}?username=${ADMIN_NAME}&pword=${ADMIN_PWORD}&osis=${barcode}&date=${DATE}" > /dev/null&
             else
-                printf "${YELLOW}You already scanned in${RESET}\n"
+                printf "%sYou already scanned in%s\n" "${YELLOW}" "${RESET}"
                 python strike_print.py "$barcode"
             fi
         fi
@@ -127,12 +127,12 @@ function scan() {
 }
 
 function helpMenu(){
-    printf "${GREEN}HELP MENU ============================================================================================================${RESET}\n"
-    printf "${YELLOW}strike add${MAGENTA}\t\t---\t\tone strike will be added to any ID scanned after \"strike on\" is entered${RESET}\n"
-    printf "${YELLOW}strike subtract${MAGENTA}\t\t---\t\tone strike will be subtracted to any ID scanned after \"strike on\" is entered${RESET}\n"
-    printf "${YELLOW}strike off${MAGENTA}\t\t---\t\t\"strike add\" or \"strike subtract\" will stop running${RESET}\n"
-    printf "${YELLOW}help${MAGENTA}\t\t\t---\t\tdisplay the help menu${RESET}\n"
-    printf "${GREEN}======================================================================================================================${RESET}\n\n"
+    printf "%sHELP MENU ============================================================================================================%s\n" "${GREEN}" "${RESET}"
+    printf "%sstrike add%s\t\t---\t\tone strike will be added to any ID scanned after \"strike on\" is entered%s\n" "${YELLOW}" "${MAGENTA}" "${RESET}"
+    printf "%sstrike subtract%s\t\t---\t\tone strike will be subtracted to any ID scanned after \"strike on\" is entered%s\n" "${YELLOW}" "${MAGENTA}" "${RESET}"
+    printf "%sstrike off%s\t\t---\t\t\"strike add\" or \"strike subtract\" will stop running%s\n" "${YELLOW}" "${MAGENTA}" "${RESET}"
+    printf "%shelp%s\t\t\t---\t\tdisplay the help menu%s\n"  "${YELLOW}" "${MAGENTA}" "${RESET}"
+    printf "%s======================================================================================================================%s\n\n" "${GREEN}" "${RESET}"
 }
 function custom_upload() {
     curl --silent -X GET "${SERVER_ADDR}?username=${ADMIN_NAME}&pword=${ADMIN_PWORD}&osis=$2&date=$1" > /dev/null
