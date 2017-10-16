@@ -34,7 +34,7 @@ function cleanup() {
 }
 
 function traphook() {
-    cleanup $LOG
+    cleanup "$LOG"
 }
 
 # Add a shutdown hook so the log is cleaned when script exits
@@ -60,7 +60,7 @@ function login() {
         ADMIN_PWORD=$pass
     else
         # Print out error message
-        local error = $(echo $response | grep 'title')
+        local error = $(echo "$response" | grep 'title')
         echo "$error"
         #printf "${RED}${response}${RESET}\n"
         exit
@@ -94,33 +94,33 @@ function scan() {
             # sound
             tput bel
             printf "${RED}ERROR: Invalid barcode${RESET}\n"
-        elif echo $barcode | grep "[^0-9]\+" > /dev/null; then
+        elif echo "$barcode" | grep "[^0-9]\+" > /dev/null; then
             tput bel
             printf "${RED}ERROR: Invalid barcode${RESET}\n"
         elif [[ $strike == 1 ]]; then
             printf "${GREEN}Strike added to ${barcode} ${RESET}\n"
-            python strike.py 1 $barcode
-            python strike_print.py $barcode
+            python strike.py 1 "$barcode"
+            python strike_print.py "$barcode"
         elif [[ $strike == 2 ]]; then
             printf "${GREEN}Strike subtracted from ${barcode} ${RESET}\n"
-            python strike.py -1 $barcode
-            python strike_print.py $barcode
+            python strike.py -1 "$barcode"
+            python strike_print.py "$barcode"
         else
             # Create the log file if it doesn't exist yet.
             if [[ ! -f $LOG ]]; then
-                touch $LOG
+                touch "$LOG"
             fi
             # Only send barcodes that haven't been logged yet
-            if [[ $(grep $barcode $LOG) == ""  ]]; then
+            if [[ $(grep "$barcode" "$LOG") == ""  ]]; then
                 printf "${GREEN}Got barcode: ${barcode}${RESET}\n"
-                python strike_print.py $barcode
+                python strike_print.py "$barcode"
                 # Append barcode to log
-                echo $barcode >> $LOG
+                echo "$barcode" >> "$LOG"
                 # Curl the server
                 curl --silent -X GET "${SERVER_ADDR}?username=${ADMIN_NAME}&pword=${ADMIN_PWORD}&osis=${barcode}&date=${DATE}" > /dev/null&
             else
                 printf "${YELLOW}You already scanned in${RESET}\n"
-                python strike_print.py $barcode
+                python strike_print.py "$barcode"
             fi
         fi
     done
@@ -140,7 +140,7 @@ function custom_upload() {
 
 function dump_csv() {
     while IFS= read num; do
-        custom_upload "${1%%.*}" $num
+        custom_upload "${1%%.*}" "$num"
     done < "$1"
 }
 
