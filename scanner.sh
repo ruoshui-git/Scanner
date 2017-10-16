@@ -60,7 +60,7 @@ function login() {
         ADMIN_PWORD=$pass
     else
         # Print out error message
-        local error = $(echo "$response" | grep 'title')
+        local error=$(echo "$response" | grep 'title')
         echo "$error"
         #printf "%s${response}%s\n" "${RED}" "${RESET}"
         exit
