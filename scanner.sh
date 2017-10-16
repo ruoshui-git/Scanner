@@ -27,15 +27,10 @@ function show_prompt() {
     echo -n "Swipe card: "
 }
 
-# Make a cleanup script to organize the log and remove duplicates
+# Sort list, removing duplicates in the process.
 function cleanup() {
     echo "Cleaning up..."
-    # A brief explanation: cat the first parameter, which should be the log file
-    # into sort, which sorts it. The sorted list is put into 'uniq' which removes
-    # duplicate values, and then that gets put into a tmp file, which then
-    # replaces the log file with that tmp file.
-    cat "$1" | sort | uniq | cat > tmp
-    mv tmp "$1"
+    sort -u -o "$1" "$1"
 }
 
 function traphook() {
@@ -144,10 +139,9 @@ function custom_upload() {
 }
 
 function dump_csv() {
-    FILE=$1
-    cat $1 | while read num; do
-    custom_upload "${FILE%%.*}" $num
-done
+    while IFS= read num; do
+        custom_upload "${1%%.*}" $num
+    done < "$1"
 }
 
 # Admin Login
