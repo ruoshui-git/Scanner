@@ -89,7 +89,7 @@ function scan() {
         elif [[ $barcode == "strike off" ]]; then
             printf "%sSTRIKE SYSTEM OFF ====================================%s\n" "${GREEN}" "${RESET}"
             strike=0
-        elif [[ ${#barcode} != $VALID_BARCODE_LENGTH ]]; then
+        elif [[ ${#barcode} != "$VALID_BARCODE_LENGTH" ]]; then
             # tput bel 'displays' the ASCII bell character, which invokes a
             # sound
             tput bel
