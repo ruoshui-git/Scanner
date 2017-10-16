@@ -45,11 +45,11 @@ function login() {
     echo "Admin login:"
     if [[ $ADMIN_EMAIL == "" ]]; then
         echo -n "Username: "
-        read name
+        read -r name
         ADMIN_NAME=$name
     fi
     echo -n "Password: "
-    read -s pass
+    read -r -s pass
     echo ""
     response=$(curl -# -X GET $SERVER_ADDR"?username=${ADMIN_NAME}&pword=${pass}")
     if [[ $response =~ "bad_login" ]]; then
@@ -74,7 +74,7 @@ function scan() {
         # Display the prompt
         show_prompt
         # Keep reading a barcode from stdin
-        read barcode
+        read -r barcode
         # The conditionals should be self explanatory
         if [[ $barcode == "exit" ]]; then
             exit
@@ -139,7 +139,7 @@ function custom_upload() {
 }
 
 function dump_csv() {
-    while IFS= read num; do
+    while IFS= read -r num; do
         custom_upload "${1%%.*}" "$num"
     done < "$1"
 }
