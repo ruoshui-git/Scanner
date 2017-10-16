@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # ANSI Escape Codes
-RED="\033[1;31m"
-GREEN="\033[1;32m"
-YELLOW="\033[1;33m"
-MAGENTA="\033[1;35m"
-RESET="\033[m"
+RED="$(tput setaf 1)"
+GREEN="$(tput setaf 2)"
+YELLOW="$(tput setaf 3)"
+MAGENTA="$(tput setaf 5)"
+RESET="$(tput setaf 7)"
 
 # Get some constants for the Date, Log Filename, and the length of a valid
 # barcode
