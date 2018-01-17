@@ -115,7 +115,7 @@ function scan() {
                 printf "%sGot barcode: %s%s\n" "${GREEN}" "${barcode}" "${RESET}"
                 python strike_print.py "$barcode"
                 # Append barcode to log
-                echo "$barcode" >> "$LOG"
+                echo "$barcode, $(date +'%H:%M:%S')" >> "$LOG"
                 # Curl the server
                 curl --silent -X GET "${SERVER_ADDR}?username=${ADMIN_NAME}&pword=${ADMIN_PWORD}&osis=${barcode}&date=${DATE}" > /dev/null&
             else
