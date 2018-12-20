@@ -1,16 +1,16 @@
 #!/bin/bash
 
-# First pull the git repo
-git pull
-# If the pull failed for whatever reason, exit
-if (( $? )); then exit 1; fi
-
 # ANSI Escape Codes
 RED="$(tput setaf 1)"
 GREEN="$(tput setaf 2)"
 YELLOW="$(tput setaf 3)"
 MAGENTA="$(tput setaf 5)"
 RESET="$(tput setaf 7)"
+
+# First pull the git repo
+git pull
+# If the pull failed for whatever reason, exit
+if (( $? )); then echo "${RED}Failed to pull repo!${RESET}"; exit 1; fi
 
 # Get some constants for the Date, Log Filename, and the length of a valid
 # barcode
