@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# First pull the git repo
+git pull
+# If the pull failed for whatever reason, exit
+if (( $? )); then exit 1; fi
+
 # ANSI Escape Codes
 RED="$(tput setaf 1)"
 GREEN="$(tput setaf 2)"
@@ -33,8 +38,16 @@ function cleanup() {
     sort -u -o "$1" "$1"
 }
 
+# Add, commit, and push the log
+function push() {
+    git add "${LOG}"
+    git commit -m "Added logs for ${DATE}"
+    git push
+}
+
 function traphook() {
     cleanup "$LOG"
+    push
 }
 
 # Add a shutdown hook so the log is cleaned when script exits
