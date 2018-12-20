@@ -82,14 +82,14 @@ function login() {
 
 function scan() {
     # Update log name if dates were overridden
-    printf "%sEnter \"exit\" to cleanup duplicates and exit%s\n" "${YELLOW}" "${RESET}"
+    printf "%sEnter \"exit\" or \"quit\" to cleanup duplicates and exit%s\n" "${YELLOW}" "${RESET}"
     while true; do
         # Display the prompt
         show_prompt
         # Keep reading a barcode from stdin
         read -r barcode
         # The conditionals should be self explanatory
-        if [[ $barcode == "exit" ]]; then
+        if [[ $barcode == "exit" || $barcode == "quit" ]]; then
             exit
         elif [[ $barcode == "help" ]]; then
             helpMenu
@@ -144,6 +144,7 @@ function helpMenu(){
     printf "%sstrike add%s\t\t---\t\tone strike will be added to any ID scanned after \"strike on\" is entered%s\n" "${YELLOW}" "${MAGENTA}" "${RESET}"
     printf "%sstrike subtract%s\t\t---\t\tone strike will be subtracted to any ID scanned after \"strike on\" is entered%s\n" "${YELLOW}" "${MAGENTA}" "${RESET}"
     printf "%sstrike off%s\t\t---\t\t\"strike add\" or \"strike subtract\" will stop running%s\n" "${YELLOW}" "${MAGENTA}" "${RESET}"
+    printf "%sexit/quit%s\t\t---\t\tcleanup duplicates and exit%s\n"  "${YELLOW}" "${MAGENTA}" "${RESET}"
     printf "%shelp%s\t\t\t---\t\tdisplay the help menu%s\n"  "${YELLOW}" "${MAGENTA}" "${RESET}"
     printf "%s======================================================================================================================%s\n\n" "${GREEN}" "${RESET}"
 }
