@@ -8,6 +8,7 @@ MAGENTA="$(tput setaf 5)"
 RESET="$(tput setaf 7)"
 
 # First pull the git repo
+echo "Pulling repo..."
 git pull
 # If the pull failed for whatever reason, exit
 if (( $? )); then echo "${RED}Failed to pull repo!${RESET}"; exit 1; fi
@@ -38,10 +39,9 @@ function cleanup() {
     sort -u -o "$1" "$1"
 }
 
-# Add and commit the log. Prompt user to push repo
+# Add the log. Prompt user to commit and push repo
 function push() {
     git add "${LOG}"
-    git commit -m "Added logs for ${DATE}"
     # Read input from user and store in variable REPLY
     # First unset REPLY in case it was previously set
     unset REPLY
@@ -50,12 +50,13 @@ function push() {
     until [[ "$REPLY" =~ [ynYN$'\r'$'\n'] ]]; do
         # This reads in 1 character from stdin and stores it in variable REPLY
         read -r -N 1 -p "Push to github [Y/n]: "
+        echo
     done
     # If the input was not no, push the repo
     if [[ ! "$REPLY" =~ [nN] ]]; then
+        git commit -m "Added logs for ${DATE}"
         git push
     fi
-    # All other cases result in pushing the repo
 }
 
 function traphook() {
