@@ -38,11 +38,24 @@ function cleanup() {
     sort -u -o "$1" "$1"
 }
 
-# Add, commit, and push the log
+# Add and commit the log. Prompt user to push repo
 function push() {
     git add "${LOG}"
     git commit -m "Added logs for ${DATE}"
-    git push
+    # Read input from user and store in variable REPLY
+    # First unset REPLY in case it was previously set
+    unset REPLY
+    # Use regex to check if REPLY is set to either 'y', 'n', 'Y', 'N', or a newline character
+    # If not, prompt again until user gives valid input
+    until [[ "$REPLY" =~ [ynYN$'\r'$'\n'] ]]; do
+        # This reads in 1 character from stdin and stores it in variable REPLY
+        read -r -N 1 -p "Push to github [Y/n]: "
+    done
+    # If the input was not no, push the repo
+    if [[ ! "$REPLY" =~ [nN] ]]; then
+        git push
+    fi
+    # All other cases result in pushing the repo
 }
 
 function traphook() {
